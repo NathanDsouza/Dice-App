@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void rollDice(View v){
 
-
+// huhlooo
         // Roll die
         die1 = rand.nextInt(6) + 1;
         die2 = rand.nextInt(6) + 1;
