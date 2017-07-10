@@ -1,5 +1,6 @@
 package com.example.diceout;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -34,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
     int die2;
     int die3;
 
+
+    // Array list to hold all dice values
     ArrayList<Integer> dice;
 
-    // ArrayList to hold all dice tings
+    // ArrayList to hold all dice images
     ArrayList<ImageView> diceImageViews;
 
     @Override
@@ -60,16 +65,25 @@ public class MainActivity extends AppCompatActivity {
         rollResult = (TextView) findViewById(R.id.rollResult);
         rollButton = (Button) findViewById(R.id.rollButton);
 
-        dice = new ArrayList<Integer>();
+       dice = new ArrayList<>();
+
+        ImageView dice1Image =(ImageView) findViewById(R.id.dieImage);
+        ImageView dice2Image =(ImageView) findViewById(R.id.die2Image);
+        ImageView dice3Image =(ImageView) findViewById(R.id.die3Image);
+
+        diceImageViews = new ArrayList<>();
+        diceImageViews.add(dice1Image);
+        diceImageViews.add(dice2Image);
+        diceImageViews.add(dice3Image);
 
         // Create greeting
-        Toast.makeText(getApplicationContext(), "Welcome to Dice Out you ugly fuck!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Welcome to Dice Out !", Toast.LENGTH_LONG).show();
 
     }
 
     public void rollDice(View v){
 
-// huhlooo
+
         // Roll die
         die1 = rand.nextInt(6) + 1;
         die2 = rand.nextInt(6) + 1;
@@ -80,7 +94,27 @@ public class MainActivity extends AppCompatActivity {
         dice.add(die2);
         dice.add(die3);
         String msg = "You rolled " + die1 + ", " + die2 + " and " + die3;
+
+        for(int dieOfSet = 0; dieOfSet < 3; dieOfSet++){
+            String imageName = "die_" + dice.get(dieOfSet) + ".png";
+
+            try{
+                InputStream stream = getAssets().open(imageName);
+                Drawable d = Drawable.createFromStream(stream, null);
+                diceImageViews.get(dieOfSet).setImageDrawable(d);
+
+
+
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+
+        }
+
+      // Toast.makeText(getApplicationContext(), "num gen is" + die1, Toast.LENGTH_LONG).show();
         rollResult.setText(msg);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
