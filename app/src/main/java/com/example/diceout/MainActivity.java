@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     // Field to hold the roll result text
     TextView rollResult;
 
+    //Field to update score
+    TextView scoreView;
+
     // Field to hold the roll button
     Button rollButton;
 
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     // ArrayList to hold all dice images
     ArrayList<ImageView> diceImageViews;
 
+    int rollCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
         });
         // Set initial score to equal to zero
         score = 0;
+        scoreView = (TextView) findViewById(R.id.score);
         rand = new Random();
         rollResult = (TextView) findViewById(R.id.rollResult);
         rollButton = (Button) findViewById(R.id.rollButton);
+        rollCount = 0;
 
        dice = new ArrayList<>();
 
@@ -82,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void rollDice(View v){
-
+        if (this.rollCount == 0) rollButton.setText("Roll");
 
         // Roll die
         die1 = rand.nextInt(6) + 1;
@@ -113,7 +120,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
       // Toast.makeText(getApplicationContext(), "num gen is" + die1, Toast.LENGTH_LONG).show();
+
+        this.score = this.score + die1 + die2 + die3;
+        rollCount++;
+
+
+      scoreView.setText("Score: " + this.score);
         rollResult.setText(msg);
+
+       if(score >= 50){
+
+            scoreView.setText("GAMEOVER! It took you " + rollCount + " rolls to reach 50 points. Ya suck lmao fuck out of here little bitch");
+            rollButton.setText("Restart");
+            score = 0;
+            rollCount = 0;
+        }
 
     }
     @Override
